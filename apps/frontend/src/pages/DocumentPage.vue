@@ -2,8 +2,7 @@
 import { MdPreview } from 'md-editor-v3';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
-import VirtualScroller from 'primevue/virtualscroller';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -28,6 +27,8 @@ const markdown = ref('');
 const loading = ref(true);
 const error = ref('');
 const retrying = ref(false);
+const previewBatchSize = 8;
+const visibleMarkdownBlockCount = ref(previewBatchSize);
 let pollTimer: number | undefined;
 const originalUrl = computed(() => getOriginalDocumentUrl(documentId.value));
 const originalFilename = computed(() => document.value?.original_filename ?? 'document');
@@ -37,6 +38,12 @@ const isIndexed = computed(() => document.value?.status === 'indexed');
 const isProcessing = computed(() => document.value?.status === 'processing');
 const isFailed = computed(() => document.value?.status === 'failed');
 const markdownPreviewBlocks = computed(() => createMarkdownPreviewBlocks(markdown.value));
+const visibleMarkdownPreviewBlocks = computed(() =>
+  markdownPreviewBlocks.value.slice(0, visibleMarkdownBlockCount.value),
+);
+const hasHiddenPreviewBlocks = computed(
+  () => visibleMarkdownBlockCount.value < markdownPreviewBlocks.value.length,
+);
 
 async function loadDocument() {
   try {
@@ -91,6 +98,27 @@ onMounted(async () => {
 });
 
 onUnmounted(stopPolling);
+
+watch(markdownPreviewBlocks, () => {
+  visibleMarkdownBlockCount.value = previewBatchSize;
+});
+
+function loadMorePreviewBlocks(event: Event) {
+  if (!hasHiddenPreviewBlocks.value) {
+    return;
+  }
+
+  const target = event.currentTarget as HTMLElement;
+  const distanceToBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
+  if (distanceToBottom > 900) {
+    return;
+  }
+
+  visibleMarkdownBlockCount.value = Math.min(
+    visibleMarkdownBlockCount.value + previewBatchSize,
+    markdownPreviewBlocks.value.length,
+  );
+}
 
 interface MarkdownPreviewBlock {
   id: string;
@@ -198,22 +226,21 @@ function withRepeatedHeading(parts: string[], heading: string, chunkIndex: numbe
         />
       </section>
 
-      <VirtualScroller
+      <div
         v-else
-        class="markdown-reader virtual-document-preview"
-        :items="markdownPreviewBlocks"
-        :item-size="620"
+        class="markdown-reader progressive-document-preview"
+        @scroll="loadMorePreviewBlocks"
       >
-        <template #item="{ item }">
-          <MdPreview
-            :id="`document-preview-${documentId}-${item.id}`"
-            class="virtual-markdown-block"
-            :model-value="item.markdown"
-            preview-theme="github"
-            :theme="markdownPreviewTheme"
-          />
-        </template>
-      </VirtualScroller>
+        <MdPreview
+          v-for="item in visibleMarkdownPreviewBlocks"
+          :id="`document-preview-${documentId}-${item.id}`"
+          :key="item.id"
+          class="progressive-markdown-block"
+          :model-value="item.markdown"
+          preview-theme="github"
+          :theme="markdownPreviewTheme"
+        />
+      </div>
     </section>
   </main>
 </template>
