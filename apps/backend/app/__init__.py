@@ -1,0 +1,2 @@
+"""LocaScan backend package."""
+

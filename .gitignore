@@ -17,9 +17,15 @@ dist/
 .vite/
 
 # Local model binaries
+model/
 model/*.gguf
 model/*.bin
 model/*.safetensors
+
+# Local planning artifacts
+LOCAL_SEARCH_ENGINE_PLAN.md
+plans/
+*.plan.md
 
 # Runtime data
 data/
