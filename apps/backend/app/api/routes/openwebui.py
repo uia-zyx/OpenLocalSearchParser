@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, Request
 
-from app.api.deps import get_document_repository
+from app.api.deps import get_document_repository, get_search_service
 from app.api.openwebui_utils import (
     document_frontend_url,
     document_id_from_url,
@@ -14,10 +14,12 @@ from app.api.schemas import (
     OpenWebUILoaderResult,
     OpenWebUISearchRequest,
     OpenWebUISearchResult,
+    SearchRequest,
 )
 from app.core.settings import Settings, get_settings
+from app.domain.models import SearchResult
 from app.ingestion.repository import DocumentRepository
-from app.search.chunking import chunk_markdown
+from app.search.service import SearchService
 
 router = APIRouter(prefix="/openwebui", tags=["openwebui"])
 
@@ -27,14 +29,20 @@ async def openwebui_web_search(
     request: OpenWebUISearchRequest,
     http_request: Request,
     settings: Annotated[Settings, Depends(get_settings)],
-    repository: Annotated[DocumentRepository, Depends(get_document_repository)],
+    search_service: Annotated[SearchService, Depends(get_search_service)],
     authorization: Annotated[str | None, Header()] = None,
     x_api_key: Annotated[str | None, Header()] = None,
 ) -> list[OpenWebUISearchResult]:
     validate_openwebui_key(settings, authorization, x_api_key)
 
     base_url = request_base_url(http_request)
-    return _keyword_search_documents(repository, request.query, request.count, base_url)
+    results = await search_service.search(
+        SearchRequest(
+            query=request.query,
+            limit=request.count,
+        )
+    )
+    return _to_openwebui_search_results(results, base_url)
 
 
 @router.post("/web-loader", response_model=list[OpenWebUILoaderResult])
@@ -79,51 +87,18 @@ async def openwebui_web_loader(
     return loaded
 
 
-def _keyword_search_documents(
-    repository: DocumentRepository,
-    query: str,
-    count: int,
+def _to_openwebui_search_results(
+    results: list[SearchResult],
     base_url: str,
 ) -> list[OpenWebUISearchResult]:
-    normalized_query = query.casefold().strip()
-    if not normalized_query:
-        return []
-
-    results: list[OpenWebUISearchResult] = []
-    for document in repository.list():
-        markdown = document.markdown or ""
-        if normalized_query not in markdown.casefold():
-            continue
-
-        snippets: list[str] = []
-        for chunk in chunk_markdown(document.id, markdown):
-            if normalized_query in chunk.text.casefold():
-                snippets.append(_snippet(chunk.text, query))
-            if len(snippets) >= 3:
-                break
-
-        results.append(
-            OpenWebUISearchResult(
-                link=document_frontend_url(base_url, document.id),
-                title=document.title,
-                snippet="\n\n".join(snippets) or _snippet(markdown, query),
-            )
+    return [
+        OpenWebUISearchResult(
+            link=document_frontend_url(base_url, result.document_id),
+            title=result.title,
+            snippet="\n\n".join(snippet.phrase for snippet in result.snippets),
         )
-
-        if len(results) >= count:
-            break
-
-    return results
-
-
-def _snippet(text: str, query: str, radius: int = 180) -> str:
-    position = text.casefold().find(query.casefold())
-    if position < 0:
-        return text[: radius * 2].strip()
-
-    start = max(position - radius, 0)
-    end = min(position + len(query) + radius, len(text))
-    return text[start:end].strip()
+        for result in results
+    ]
 
 
 def _truncate_loader_content(markdown: str, max_chars: int) -> str:

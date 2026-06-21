@@ -4,7 +4,10 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from app.api.routes.openwebui import _keyword_search_documents, _truncate_loader_content
+from app.api.routes.openwebui import (
+    _to_openwebui_search_results,
+    _truncate_loader_content,
+)
 from app.api.openwebui_utils import (
     document_frontend_url,
     document_id_from_url,
@@ -12,15 +15,7 @@ from app.api.openwebui_utils import (
     validate_openwebui_key,
 )
 from app.core.settings import Settings
-from app.domain.models import Document, ProcessingStrategy
-
-
-class StubRepository:
-    def __init__(self, documents: list[Document]) -> None:
-        self.documents = documents
-
-    def list(self) -> list[Document]:
-        return self.documents
+from app.domain.models import SearchResult, SearchSnippet
 
 
 def test_document_id_from_frontend_url() -> None:
@@ -71,22 +66,35 @@ def test_openwebui_auth_rejects_wrong_key() -> None:
         validate_openwebui_key(settings, "Bearer wrong", None)
 
 
-def test_openwebui_keyword_search_uses_local_markdown_only() -> None:
-    document = Document(
-        title="Math",
-        original_filename="math.pdf",
-        mime_type="application/pdf",
-        content_hash="hash",
-        processing_strategy=ProcessingStrategy.scanner_ocr,
-        markdown="# Math\n\nUseful integral formula.",
+def test_openwebui_search_results_adapt_local_search_response() -> None:
+    document_id = uuid4()
+    results = _to_openwebui_search_results(
+        [
+            SearchResult(
+                document_id=document_id,
+                title="Equations",
+                url=f"/documents/{document_id}",
+                score=1.0,
+                snippets=[
+                    SearchSnippet(
+                        chunk_id="chunk-1",
+                        phrase="корни уравнения на отрезке",
+                    ),
+                    SearchSnippet(
+                        chunk_id="chunk-2",
+                        phrase="оставьте только решения внутри интервала",
+                    ),
+                ],
+            )
+        ],
+        "http://app.local",
     )
-    repository = StubRepository([document])
-
-    results = _keyword_search_documents(repository, "integral", 3, "http://app.local")
 
     assert len(results) == 1
-    assert results[0].link == f"http://app.local/documents/{document.id}"
-    assert "integral" in results[0].snippet
+    assert results[0].title == "Equations"
+    assert results[0].link == f"http://app.local/documents/{document_id}"
+    assert "корни уравнения" in results[0].snippet
+    assert "внутри интервала" in results[0].snippet
 
 
 def test_truncate_loader_content_limits_large_documents() -> None:
