@@ -12,3 +12,11 @@ def test_markdown_post_processing_removes_wrapping_fence_and_extra_spaces() -> N
     )
 
     assert markdown == "# Title\n\nFormula: $x + y$"
+
+
+def test_markdown_post_processing_removes_nul_bytes() -> None:
+    registry = ParserRegistry()
+
+    markdown = registry._post_process_ocr_markdown("A\x00B\x07\n\nC")
+
+    assert markdown == "AB\n\nC"

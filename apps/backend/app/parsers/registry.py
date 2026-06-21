@@ -249,7 +249,8 @@ class ParserRegistry:
         return cleaned if cleaned.lstrip().startswith("#") else f"# {filename}\n\n{cleaned}"
 
     def _post_process_ocr_markdown(self, markdown: str) -> str:
-        cleaned = markdown.strip()
+        cleaned = markdown.replace("\x00", "").strip()
+        cleaned = re.sub(r"[\x01-\x08\x0b\x0c\x0e-\x1f]", "", cleaned)
         cleaned = re.sub(r"^```(?:markdown|md)?\s*", "", cleaned, flags=re.IGNORECASE)
         cleaned = re.sub(r"\s*```$", "", cleaned)
         cleaned = re.sub(r"[ \t]+\n", "\n", cleaned)

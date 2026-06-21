@@ -20,14 +20,14 @@ class DocumentRepository:
                 record = DocumentRecord(id=str(document.id))
                 session.add(record)
 
-            record.title = document.title
-            record.original_filename = document.original_filename
-            record.mime_type = document.mime_type
+            record.title = _clean_postgres_text(document.title)
+            record.original_filename = _clean_postgres_text(document.original_filename)
+            record.mime_type = _clean_postgres_text(document.mime_type)
             record.content_hash = document.content_hash
-            record.storage_key = document.storage_key or ""
+            record.storage_key = _clean_postgres_text(document.storage_key or "")
             record.status = document.status.value
             record.processing_strategy = document.processing_strategy.value
-            record.markdown = document.markdown
+            record.markdown = _clean_postgres_text(document.markdown) if document.markdown else None
             record.created_at = document.created_at
             session.commit()
 
@@ -85,3 +85,7 @@ class DocumentRepository:
             markdown=record.markdown,
             created_at=record.created_at,
         )
+
+
+def _clean_postgres_text(value: str) -> str:
+    return value.replace("\x00", "")
