@@ -5,22 +5,65 @@ import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
-import { getOriginalDocumentUrl, listDocuments, type DocumentListItem } from '../services/api';
+import {
+  deleteDocument,
+  getOriginalDocumentUrl,
+  listDocuments,
+  updateDocumentTitle,
+  type DocumentListItem,
+} from '../services/api';
 
 const { t } = useI18n();
 const documents = ref<DocumentListItem[]>([]);
 const loading = ref(true);
 const error = ref('');
+const editingId = ref<string | null>(null);
+const editingTitle = ref('');
 
-onMounted(async () => {
+async function loadDocuments() {
   try {
+    loading.value = true;
     documents.value = await listDocuments();
   } catch (requestError) {
     error.value = requestError instanceof Error ? requestError.message : t('documents.loadFailed');
   } finally {
     loading.value = false;
   }
-});
+}
+
+function startEdit(document: DocumentListItem) {
+  editingId.value = document.id;
+  editingTitle.value = document.title;
+}
+
+function cancelEdit() {
+  editingId.value = null;
+  editingTitle.value = '';
+}
+
+async function saveTitle(document: DocumentListItem) {
+  const nextTitle = editingTitle.value.trim();
+  if (!nextTitle) {
+    return;
+  }
+
+  const updatedDocument = await updateDocumentTitle(document.id, nextTitle);
+  documents.value = documents.value.map((item) =>
+    item.id === updatedDocument.id ? updatedDocument : item,
+  );
+  cancelEdit();
+}
+
+async function removeDocument(document: DocumentListItem) {
+  if (!window.confirm(t('documents.confirmDelete', { title: document.title }))) {
+    return;
+  }
+
+  await deleteDocument(document.id);
+  documents.value = documents.value.filter((item) => item.id !== document.id);
+}
+
+onMounted(loadDocuments);
 </script>
 
 <template>
@@ -46,8 +89,13 @@ onMounted(async () => {
 
     <section v-else class="documents-list">
       <article v-for="document in documents" :key="document.id" class="document-card">
-        <div>
-          <RouterLink class="result-title" :to="`/documents/${document.id}`">
+        <div class="document-card-main">
+          <div v-if="editingId === document.id" class="document-edit-form">
+            <input v-model="editingTitle" class="document-title-input" />
+            <Button :label="t('documents.save')" size="small" @click="saveTitle(document)" />
+            <Button :label="t('documents.cancel')" size="small" text @click="cancelEdit" />
+          </div>
+          <RouterLink v-else class="result-title" :to="`/documents/${document.id}`">
             {{ document.title }}
           </RouterLink>
           <div class="document-meta">
@@ -59,7 +107,21 @@ onMounted(async () => {
           <RouterLink :to="`/documents/${document.id}`">
             <Button :label="t('documents.openRecognized')" text />
           </RouterLink>
-          <a :href="getOriginalDocumentUrl(document.id)" download>
+          <Button
+            v-if="editingId !== document.id"
+            :label="t('documents.rename')"
+            icon="pi pi-pencil"
+            text
+            @click="startEdit(document)"
+          />
+          <Button
+            :label="t('documents.delete')"
+            icon="pi pi-trash"
+            severity="danger"
+            text
+            @click="removeDocument(document)"
+          />
+          <a :href="getOriginalDocumentUrl(document.id)" :download="document.original_filename">
             <Button :label="t('documents.downloadOriginal')" icon="pi pi-download" text />
           </a>
         </div>

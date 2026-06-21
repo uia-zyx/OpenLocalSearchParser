@@ -29,10 +29,15 @@ async function upload(strategyOverride?: ProcessingStrategy) {
 
   const selectedStrategy = strategyOverride ?? strategy.value;
   const response = await uploadDocument(selectedFile.value, selectedStrategy);
-  status.value = t('upload.uploaded', {
-    name: selectedFile.value.name,
-    id: response.document_id,
-  });
+  status.value = response.deduplicated
+    ? t('upload.duplicate', {
+        name: selectedFile.value.name,
+        id: response.document_id,
+      })
+    : t('upload.uploaded', {
+        name: selectedFile.value.name,
+        id: response.document_id,
+      });
 }
 </script>
 

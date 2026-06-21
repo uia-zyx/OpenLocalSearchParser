@@ -27,6 +27,11 @@ export const messages = {
       openRecognized: 'Open recognized text',
       downloadOriginal: 'Download original',
       loadFailed: 'Failed to load documents',
+      rename: 'Rename',
+      delete: 'Delete',
+      save: 'Save',
+      cancel: 'Cancel',
+      confirmDelete: 'Delete “{title}”?',
     },
     upload: {
       title: 'Upload Documents',
@@ -48,6 +53,7 @@ export const messages = {
       uploadText: 'Upload text',
       chooseFileFirst: 'Choose a file first.',
       uploaded: 'Uploaded {name}; document id {id}',
+      duplicate: 'Document {name} already exists; opened existing document id {id}',
     },
     document: {
       recognized: 'Recognized Document',
@@ -79,6 +85,11 @@ export const messages = {
       openRecognized: 'Открыть распознанный текст',
       downloadOriginal: 'Скачать оригинал',
       loadFailed: 'Не удалось загрузить документы',
+      rename: 'Переименовать',
+      delete: 'Удалить',
+      save: 'Сохранить',
+      cancel: 'Отмена',
+      confirmDelete: 'Удалить «{title}»?',
     },
     upload: {
       title: 'Загрузка документов',
@@ -100,6 +111,7 @@ export const messages = {
       uploadText: 'Загрузить текст',
       chooseFileFirst: 'Сначала выберите файл.',
       uploaded: 'Загружен {name}; document id {id}',
+      duplicate: 'Документ {name} уже существует; открыт существующий document id {id}',
     },
     document: {
       recognized: 'Распознанный документ',

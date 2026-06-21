@@ -162,6 +162,10 @@ a:hover {
   padding: 1rem;
 }
 
+.document-card-main {
+  min-width: 0;
+}
+
 .document-meta {
   color: #6b7280;
   font-size: 0.9rem;
@@ -172,6 +176,20 @@ a:hover {
   align-items: center;
   display: flex;
   gap: 0.5rem;
+}
+
+.document-edit-form {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.document-title-input {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font: inherit;
+  min-width: 280px;
+  padding: 0.45rem 0.65rem;
 }
 
 .empty-state {
@@ -216,7 +234,72 @@ a:hover {
   line-height: 1.55;
   overflow: auto;
   padding: 1.5rem;
-  white-space: pre-wrap;
+}
+
+.markdown-reader h1,
+.markdown-reader h2,
+.markdown-reader h3 {
+  line-height: 1.25;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.markdown-reader h1:first-child,
+.markdown-reader h2:first-child,
+.markdown-reader h3:first-child {
+  margin-top: 0;
+}
+
+.markdown-reader p {
+  margin: 0.75rem 0;
+}
+
+.markdown-reader ul,
+.markdown-reader ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-reader table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.markdown-reader th,
+.markdown-reader td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+}
+
+.markdown-reader th {
+  background: #eef2ff;
+  font-weight: 700;
+}
+
+.markdown-reader blockquote {
+  border-left: 4px solid #9ca3af;
+  color: #4b5563;
+  margin: 1rem 0;
+  padding-left: 1rem;
+}
+
+.markdown-reader code {
+  background: #eef2f7;
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.25rem;
+}
+
+.markdown-reader pre {
+  background: #111827;
+  border-radius: 0.75rem;
+  color: #f9fafb;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.markdown-reader pre code {
+  background: transparent;
+  padding: 0;
 }
 
 .loading-state,

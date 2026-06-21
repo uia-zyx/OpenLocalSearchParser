@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MarkdownIt from 'markdown-it';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 import { computed } from 'vue';
@@ -21,6 +22,12 @@ const markdown = ref('');
 const loading = ref(true);
 const originalUrl = computed(() => getOriginalDocumentUrl(documentId.value));
 const originalFilename = computed(() => document.value?.original_filename ?? 'document');
+const markdownRenderer = new MarkdownIt({
+  breaks: true,
+  html: false,
+  linkify: true,
+});
+const renderedMarkdown = computed(() => markdownRenderer.render(markdown.value));
 
 onMounted(async () => {
   const [documentMetadata, documentMarkdown] = await Promise.all([
@@ -45,7 +52,7 @@ onMounted(async () => {
         </a>
       </div>
 
-      <pre class="markdown-reader">{{ markdown }}</pre>
+      <article class="markdown-reader" v-html="renderedMarkdown"></article>
     </section>
   </main>
 </template>

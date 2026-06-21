@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, s
 from fastapi.responses import Response
 
 from app.api.deps import get_document_repository, get_ingestion_service
-from app.api.schemas import DocumentListItem, DocumentUploadResponse
+from app.api.schemas import DocumentListItem, DocumentUpdateRequest, DocumentUploadResponse
 from app.domain.models import ProcessingStrategy
 from app.ingestion.service import IngestionService, InMemoryDocumentRepository
 
@@ -20,14 +20,19 @@ async def upload_document(
     service: IngestionService = Depends(get_ingestion_service),
 ) -> DocumentUploadResponse:
     content = await file.read()
-    document, job_id = await service.ingest(
+    document, job_id, deduplicated = await service.ingest(
         filename=file.filename or "document",
         mime_type=file.content_type or "application/octet-stream",
         content=content,
         strategy=strategy,
     )
 
-    return DocumentUploadResponse(document_id=document.id, job_id=job_id, status=document.status)
+    return DocumentUploadResponse(
+        document_id=document.id,
+        job_id=job_id,
+        status=document.status,
+        deduplicated=deduplicated,
+    )
 
 
 @router.get("", response_model=list[DocumentListItem])
@@ -64,6 +69,40 @@ async def get_document(
         status=document.status,
         processing_strategy=document.processing_strategy,
     )
+
+
+@router.put("/{document_id}", response_model=DocumentListItem)
+async def update_document(
+    document_id: UUID,
+    request: DocumentUpdateRequest,
+    repository: InMemoryDocumentRepository = Depends(get_document_repository),
+) -> DocumentListItem:
+    document = repository.get(document_id)
+    if document is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
+
+    document.title = request.title
+    repository.save(document)
+
+    return DocumentListItem(
+        id=document.id,
+        title=document.title,
+        original_filename=document.original_filename,
+        mime_type=document.mime_type,
+        status=document.status,
+        processing_strategy=document.processing_strategy,
+    )
+
+
+@router.delete("/{document_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_document(
+    document_id: UUID,
+    repository: InMemoryDocumentRepository = Depends(get_document_repository),
+) -> Response:
+    if not repository.delete(document_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.get("/{document_id}/markdown", response_model=str)

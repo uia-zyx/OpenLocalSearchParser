@@ -9,6 +9,7 @@ class DocumentUploadResponse(BaseModel):
     document_id: UUID
     job_id: UUID
     status: DocumentStatus
+    deduplicated: bool = False
 
 
 class DocumentListItem(BaseModel):
@@ -18,6 +19,10 @@ class DocumentListItem(BaseModel):
     mime_type: str
     status: DocumentStatus
     processing_strategy: ProcessingStrategy
+
+
+class DocumentUpdateRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=255)
 
 
 class SearchFilters(BaseModel):

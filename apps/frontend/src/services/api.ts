@@ -30,6 +30,13 @@ export interface DocumentListItem {
   processing_strategy: ProcessingStrategy;
 }
 
+export interface DocumentUploadResponse {
+  document_id: string;
+  job_id: string;
+  status: string;
+  deduplicated: boolean;
+}
+
 export function getOriginalDocumentUrl(documentId: string): string {
   return `/api/documents/${documentId}/original`;
 }
@@ -43,12 +50,15 @@ export async function searchDocuments(query: string): Promise<SearchResponse> {
   return response.data;
 }
 
-export async function uploadDocument(file: File, strategy: ProcessingStrategy) {
+export async function uploadDocument(
+  file: File,
+  strategy: ProcessingStrategy,
+): Promise<DocumentUploadResponse> {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('strategy', strategy);
 
-  const response = await api.post('/documents', formData);
+  const response = await api.post<DocumentUploadResponse>('/documents', formData);
   return response.data;
 }
 
@@ -60,6 +70,18 @@ export async function listDocuments(): Promise<DocumentListItem[]> {
 export async function getDocument(documentId: string): Promise<DocumentListItem> {
   const response = await api.get<DocumentListItem>(`/documents/${documentId}`);
   return response.data;
+}
+
+export async function updateDocumentTitle(
+  documentId: string,
+  title: string,
+): Promise<DocumentListItem> {
+  const response = await api.put<DocumentListItem>(`/documents/${documentId}`, { title });
+  return response.data;
+}
+
+export async function deleteDocument(documentId: string): Promise<void> {
+  await api.delete(`/documents/${documentId}`);
 }
 
 export async function getDocumentMarkdown(documentId: string): Promise<string> {
