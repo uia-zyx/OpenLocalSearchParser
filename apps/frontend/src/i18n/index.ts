@@ -78,6 +78,7 @@ export const messages = {
     },
     document: {
       recognized: 'Recognized Document',
+      page: 'Page',
       downloadOriginal: 'Download original',
       downloadRecognized: 'Download recognized Markdown',
       processing: 'OCR is still processing this document. The page will update automatically.',
@@ -197,6 +198,7 @@ export const messages = {
     },
     document: {
       recognized: 'Распознанный документ',
+      page: 'Страница',
       downloadOriginal: 'Скачать оригинал',
       downloadRecognized: 'Скачать распознанный Markdown',
       processing: 'OCR ещё обрабатывает этот документ. Страница обновится автоматически.',

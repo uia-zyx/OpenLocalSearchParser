@@ -16,6 +16,7 @@ import {
   retryDocumentProcessing,
   type DocumentListItem,
 } from '../services/api';
+import { localizeMarkdownPageHeadings } from '../markdown/localization';
 import { useTheme } from '../theme';
 
 const route = useRoute();
@@ -37,7 +38,8 @@ const recognizedFilename = computed(() => getRecognizedFilename(originalFilename
 const isIndexed = computed(() => document.value?.status === 'indexed');
 const isProcessing = computed(() => document.value?.status === 'processing');
 const isFailed = computed(() => document.value?.status === 'failed');
-const markdownPreviewBlocks = computed(() => createMarkdownPreviewBlocks(markdown.value));
+const localizedMarkdown = computed(() => localizeMarkdownPageHeadings(markdown.value, t('document.page')));
+const markdownPreviewBlocks = computed(() => createMarkdownPreviewBlocks(localizedMarkdown.value));
 const visibleMarkdownPreviewBlocks = computed(() =>
   markdownPreviewBlocks.value.slice(0, visibleMarkdownBlockCount.value),
 );
@@ -131,7 +133,7 @@ function createMarkdownPreviewBlocks(source: string): MarkdownPreviewBlock[] {
     return [];
   }
 
-  const pageSections = normalized.split(/(?=^## Page \d+\b)/m).filter(Boolean);
+  const pageSections = normalized.split(/(?=^## (?:Page|Страница) \d+\b)/m).filter(Boolean);
   const sections = pageSections.length > 1 ? pageSections : [normalized];
 
   return sections.flatMap((section, sectionIndex) =>

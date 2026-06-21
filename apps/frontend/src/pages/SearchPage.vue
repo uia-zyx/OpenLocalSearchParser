@@ -7,6 +7,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 
+import { localizeMarkdownPageHeadings } from '../markdown/localization';
 import { useSearchStore } from '../stores/searchStore';
 import { useTheme } from '../theme';
 
@@ -31,9 +32,13 @@ const answer = computed(() => {
     query: store.query,
     count: store.results.length,
     title: topResult.title,
-    snippet: topSnippet,
+    snippet: localizeSearchMarkdown(topSnippet),
   });
 });
+
+function localizeSearchMarkdown(markdown: string): string {
+  return localizeMarkdownPageHeadings(markdown, t('document.page'));
+}
 
 async function submitSearch() {
   if (!query.value.trim()) {
@@ -87,7 +92,7 @@ if (query.value) {
           :id="`snippet-preview-${snippet.chunk_id}`"
           :key="snippet.chunk_id"
           class="snippet search-markdown-preview"
-          :model-value="snippet.phrase"
+          :model-value="localizeSearchMarkdown(snippet.phrase)"
           preview-theme="github"
           :theme="markdownPreviewTheme"
         />
