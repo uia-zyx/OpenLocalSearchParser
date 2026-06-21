@@ -119,6 +119,18 @@ a:hover {
   margin-top: 1rem;
 }
 
+.document-actions {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.document-actions h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
 .markdown-reader {
   background: #f9fafb;
   border: 1px solid #e5e7eb;

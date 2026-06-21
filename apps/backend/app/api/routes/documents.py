@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi.responses import Response
 
 from app.api.deps import get_document_repository, get_ingestion_service
 from app.api.schemas import DocumentListItem, DocumentUploadResponse
@@ -54,4 +55,22 @@ async def get_document_markdown(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
 
     return document.markdown or ""
+
+
+@router.get("/{document_id}/original")
+async def get_original_document(
+    document_id: UUID,
+    repository: InMemoryDocumentRepository = Depends(get_document_repository),
+) -> Response:
+    document = repository.get(document_id)
+    if document is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
+
+    return Response(
+        content=document.original_content,
+        media_type=document.mime_type,
+        headers={
+            "Content-Disposition": f'attachment; filename="{document.original_filename}"',
+        },
+    )
 

@@ -44,6 +44,7 @@ class IngestionService:
             title=parsed.title,
             original_filename=filename,
             mime_type=mime_type,
+            original_content=content,
             status=DocumentStatus.indexed,
             processing_strategy=parsed.strategy,
             markdown=parsed.markdown,

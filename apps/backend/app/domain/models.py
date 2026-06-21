@@ -23,6 +23,7 @@ class Document(BaseModel):
     title: str
     original_filename: str
     mime_type: str
+    original_content: bytes
     status: DocumentStatus = DocumentStatus.uploaded
     processing_strategy: ProcessingStrategy
     markdown: str | None = None

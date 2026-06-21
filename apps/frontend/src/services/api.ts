@@ -21,6 +21,10 @@ export interface SearchResponse {
   items: SearchResult[];
 }
 
+export function getOriginalDocumentUrl(documentId: string): string {
+  return `/api/documents/${documentId}/original`;
+}
+
 export const api = axios.create({
   baseURL: '/api',
 });
