@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import MarkdownIt from 'markdown-it';
-import markdownItKatex from 'markdown-it-katex';
+import { MdPreview } from 'md-editor-v3';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 import { computed } from 'vue';
@@ -32,15 +31,6 @@ const recognizedFilename = computed(() => getRecognizedFilename(originalFilename
 const isIndexed = computed(() => document.value?.status === 'indexed');
 const isProcessing = computed(() => document.value?.status === 'processing');
 const isFailed = computed(() => document.value?.status === 'failed');
-const markdownRenderer = new MarkdownIt({
-  breaks: true,
-  html: false,
-  linkify: true,
-}).use(markdownItKatex, {
-  throwOnError: false,
-  errorColor: '#b91c1c',
-});
-const renderedMarkdown = computed(() => markdownRenderer.render(markdown.value));
 
 async function loadDocument() {
   try {
@@ -121,7 +111,14 @@ onUnmounted(stopPolling);
         {{ t('document.processingFailed') }}
       </section>
 
-      <article v-else class="markdown-reader" v-html="renderedMarkdown"></article>
+      <MdPreview
+        v-else
+        :id="`document-preview-${documentId}`"
+        class="markdown-reader"
+        :model-value="markdown"
+        preview-theme="github"
+        theme="light"
+      />
     </section>
   </main>
 </template>

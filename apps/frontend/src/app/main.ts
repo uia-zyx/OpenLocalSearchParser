@@ -4,6 +4,7 @@ import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
 import 'katex/dist/katex.min.css';
+import 'md-editor-v3/lib/preview.css';
 import 'primeicons/primeicons.css';
 import '../styles/main.css';
 import App from './App.vue';

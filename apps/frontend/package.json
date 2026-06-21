@@ -12,8 +12,7 @@
     "@primevue/themes": "latest",
     "axios": "latest",
     "katex": "^0.17.0",
-    "markdown-it": "^14.2.0",
-    "markdown-it-katex": "^2.0.3",
+    "md-editor-v3": "^6.5.1",
     "pinia": "latest",
     "primeicons": "latest",
     "primevue": "latest",
@@ -22,7 +21,6 @@
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@types/markdown-it": "^14.1.2",
     "@vitejs/plugin-vue": "latest",
     "typescript": "latest",
     "vite": "latest",
