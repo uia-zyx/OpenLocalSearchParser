@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     app_name: str = "LocaScanScribe.AI"
     app_env: str = "local"
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000"])
+    frontend_base_url: str = "http://localhost:3000"
+    openwebui_web_search_api_key: str = ""
 
     postgres_host: str = "postgres"
     postgres_port: int = 5432

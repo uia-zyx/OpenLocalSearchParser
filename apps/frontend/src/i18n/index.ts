@@ -10,6 +10,7 @@ export const messages = {
       search: 'Search',
       documents: 'Documents',
       upload: 'Upload',
+      apiDocs: 'API Docs',
       language: 'Language',
     },
     search: {
@@ -79,6 +80,40 @@ export const messages = {
       processingFailed: 'OCR processing failed for this document.',
       loadFailed: 'Failed to load document',
     },
+    apiDocs: {
+      title: 'API Documentation',
+      subtitle: 'HTTP endpoints for document ingestion, search, and Open WebUI integration.',
+      core: {
+        title: 'Core API',
+        upload: 'Upload a document and queue OCR/indexing.',
+        list: 'List documents with status and processing strategy.',
+        markdown: 'Return recognized Markdown for a document.',
+        search: 'Search indexed local documents.',
+      },
+      openWebUi: {
+        title: 'Open WebUI Web Search',
+        description:
+          'Use these values in Admin Panel -> Settings -> Web Search when the search engine is set to external.',
+        searchEngine: 'Search engine',
+        externalSearchUrl: 'External web search URL',
+        externalLoaderUrl: 'External web loader URL',
+        externalApiKey: 'External web search API key',
+        frontendBaseUrl: 'Document link base URL',
+        recommendedTitle: 'Recommended Open WebUI options',
+        bypassEmbedding: 'Enable bypass embedding and retrieval for quick snippet-based results.',
+        bypassWebLoader:
+          'Enable bypass web loader if you only need returned snippets. Disable it and use the loader URL for full recognized Markdown.',
+        trustProxy:
+          'Trust provided proxy parameters only when Open WebUI is behind a trusted reverse proxy.',
+      },
+      contract: {
+        title: 'External Contract',
+        searchRequest: 'Web search request',
+        searchResponse: 'Web search response',
+        loaderRequest: 'Web loader request',
+        loaderResponse: 'Web loader response',
+      },
+    },
     errors: {
       searchFailed: 'Search failed',
     },
@@ -88,6 +123,7 @@ export const messages = {
       search: 'Поиск',
       documents: 'Документы',
       upload: 'Загрузка',
+      apiDocs: 'API Docs',
       language: 'Язык',
     },
     search: {
@@ -156,6 +192,41 @@ export const messages = {
       processing: 'OCR ещё обрабатывает этот документ. Страница обновится автоматически.',
       processingFailed: 'OCR обработка этого документа не удалась.',
       loadFailed: 'Не удалось загрузить документ',
+    },
+    apiDocs: {
+      title: 'Документация API',
+      subtitle: 'HTTP endpoints для загрузки документов, поиска и интеграции с Open WebUI.',
+      core: {
+        title: 'Основное API',
+        upload: 'Загрузить документ и поставить OCR/индексацию в очередь.',
+        list: 'Получить список документов со статусом и стратегией обработки.',
+        markdown: 'Получить распознанный Markdown документа.',
+        search: 'Выполнить поиск по локально проиндексированным документам.',
+      },
+      openWebUi: {
+        title: 'Веб-поиск Open WebUI',
+        description:
+          'Используйте эти значения в Admin Panel -> Settings -> Web Search, когда поисковая система установлена в external.',
+        searchEngine: 'Поисковая система',
+        externalSearchUrl: 'URL-адрес внешнего веб-поиска',
+        externalLoaderUrl: 'URL-адрес внешнего веб-загрузчика',
+        externalApiKey: 'Внешний ключ API веб-поиска',
+        frontendBaseUrl: 'Базовый URL ссылок на документы',
+        recommendedTitle: 'Рекомендуемые параметры Open WebUI',
+        bypassEmbedding:
+          'Включите обход встраивания и извлечения данных для быстрых результатов по snippets.',
+        bypassWebLoader:
+          'Включите обход веб-загрузчика, если достаточно snippets. Отключите его и используйте loader URL для полного распознанного Markdown.',
+        trustProxy:
+          'Доверяйте заданным параметрам прокси только если Open WebUI стоит за доверенным reverse proxy.',
+      },
+      contract: {
+        title: 'External contract',
+        searchRequest: 'Запрос веб-поиска',
+        searchResponse: 'Ответ веб-поиска',
+        loaderRequest: 'Запрос веб-загрузчика',
+        loaderResponse: 'Ответ веб-загрузчика',
+      },
     },
     errors: {
       searchFailed: 'Поиск не выполнен',

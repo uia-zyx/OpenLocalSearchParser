@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import documents, health, search
+from app.api.routes import documents, health, openwebui, search
 from app.core.settings import get_settings
 from app.db.session import init_database
 
@@ -25,6 +25,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix="/api")
     app.include_router(documents.router, prefix="/api")
     app.include_router(search.router, prefix="/api")
+    app.include_router(openwebui.router, prefix="/api")
     return app
 
 

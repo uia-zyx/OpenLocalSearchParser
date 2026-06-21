@@ -20,6 +20,7 @@ const selectedLocale = computed({
         <RouterLink to="/">{{ t('nav.search') }}</RouterLink>
         <RouterLink to="/documents">{{ t('nav.documents') }}</RouterLink>
         <RouterLink to="/upload">{{ t('nav.upload') }}</RouterLink>
+        <RouterLink to="/api-docs">{{ t('nav.apiDocs') }}</RouterLink>
         <label class="language-select">
           <span>{{ t('nav.language') }}</span>
           <select v-model="selectedLocale" aria-label="Language">

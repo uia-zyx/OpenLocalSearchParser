@@ -155,7 +155,8 @@ a:hover {
 
 .upload-page,
 .documents-page,
-.document-page {
+.document-page,
+.api-docs-page {
   margin: 0 auto;
   max-width: 900px;
   padding: 2rem;
@@ -170,6 +171,110 @@ a:hover {
 
 .page-heading h1 {
   margin: 0;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0.5rem 0 0;
+}
+
+.docs-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.docs-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+}
+
+.docs-card h2 {
+  margin: 0 0 1rem;
+}
+
+.docs-card h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.docs-card p {
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+.docs-card-wide {
+  grid-column: 1 / -1;
+}
+
+.endpoint-list,
+.settings-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.endpoint-list p {
+  margin: 0.35rem 0 0;
+}
+
+.settings-list div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.settings-list span {
+  color: #4b5563;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.recommendation-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.recommendation-box ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.recommendation-box li {
+  line-height: 1.5;
+  margin: 0.35rem 0;
+}
+
+.code-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.docs-card code,
+.docs-card pre {
+  background: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.docs-card code {
+  color: #111827;
+  overflow-wrap: anywhere;
+  padding: 0.15rem 0.35rem;
+}
+
+.docs-card pre {
+  color: #111827;
+  margin: 0;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.docs-card pre code {
+  background: transparent;
+  padding: 0;
 }
 
 .documents-list {

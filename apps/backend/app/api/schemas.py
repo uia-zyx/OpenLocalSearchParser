@@ -38,3 +38,23 @@ class SearchRequest(BaseModel):
 class SearchResponse(BaseModel):
     items: list[SearchResult]
 
+
+class OpenWebUISearchRequest(BaseModel):
+    query: str = Field(min_length=1)
+    count: int = Field(default=5, ge=1, le=50)
+
+
+class OpenWebUISearchResult(BaseModel):
+    link: str
+    title: str
+    snippet: str
+
+
+class OpenWebUILoaderRequest(BaseModel):
+    urls: list[str] = Field(min_length=1, max_length=20)
+
+
+class OpenWebUILoaderResult(BaseModel):
+    page_content: str
+    metadata: dict[str, str]
+
