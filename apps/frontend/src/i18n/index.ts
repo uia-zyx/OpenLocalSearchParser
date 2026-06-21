@@ -26,6 +26,7 @@ export const messages = {
       empty: 'No documents uploaded yet.',
       openRecognized: 'Open recognized text',
       downloadOriginal: 'Download original',
+      downloadRecognized: 'Download recognized Markdown',
       loadFailed: 'Failed to load documents',
       rename: 'Rename',
       delete: 'Delete',
@@ -66,6 +67,7 @@ export const messages = {
     document: {
       recognized: 'Recognized Document',
       downloadOriginal: 'Download original',
+      downloadRecognized: 'Download recognized Markdown',
     },
     errors: {
       searchFailed: 'Search failed',
@@ -92,6 +94,7 @@ export const messages = {
       empty: 'Документы ещё не загружены.',
       openRecognized: 'Открыть распознанный текст',
       downloadOriginal: 'Скачать оригинал',
+      downloadRecognized: 'Скачать распознанный Markdown',
       loadFailed: 'Не удалось загрузить документы',
       rename: 'Переименовать',
       delete: 'Удалить',
@@ -132,6 +135,7 @@ export const messages = {
     document: {
       recognized: 'Распознанный документ',
       downloadOriginal: 'Скачать оригинал',
+      downloadRecognized: 'Скачать распознанный Markdown',
     },
     errors: {
       searchFailed: 'Поиск не выполнен',

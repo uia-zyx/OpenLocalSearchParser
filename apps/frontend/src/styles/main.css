@@ -263,6 +263,12 @@ a:hover {
   margin: 0;
 }
 
+.document-download-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
 .markdown-reader {
   background: #f9fafb;
   border: 1px solid #e5e7eb;

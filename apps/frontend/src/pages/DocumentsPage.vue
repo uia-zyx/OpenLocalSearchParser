@@ -8,6 +8,8 @@ import { RouterLink } from 'vue-router';
 import {
   deleteDocument,
   getOriginalDocumentUrl,
+  getRecognizedDocumentUrl,
+  getRecognizedFilename,
   listDocuments,
   updateDocumentTitle,
   type DocumentListItem,
@@ -167,6 +169,18 @@ onMounted(loadDocuments);
               :aria-label="t('documents.downloadOriginal')"
               :title="t('documents.downloadOriginal')"
               icon="pi pi-download"
+              rounded
+              text
+            />
+          </a>
+          <a
+            :href="getRecognizedDocumentUrl(document.id)"
+            :download="getRecognizedFilename(document.original_filename)"
+          >
+            <Button
+              :aria-label="t('documents.downloadRecognized')"
+              :title="t('documents.downloadRecognized')"
+              icon="pi pi-file"
               rounded
               text
             />

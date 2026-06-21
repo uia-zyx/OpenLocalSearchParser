@@ -41,6 +41,16 @@ export function getOriginalDocumentUrl(documentId: string): string {
   return `/api/documents/${documentId}/original`;
 }
 
+export function getRecognizedDocumentUrl(documentId: string): string {
+  return `/api/documents/${documentId}/recognized`;
+}
+
+export function getRecognizedFilename(filename: string): string {
+  const dotIndex = filename.lastIndexOf('.');
+  const stem = dotIndex > 0 ? filename.slice(0, dotIndex) : filename;
+  return `${stem || 'document'}.recognized.md`;
+}
+
 export const api = axios.create({
   baseURL: '/api',
 });

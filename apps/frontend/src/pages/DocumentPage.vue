@@ -11,6 +11,8 @@ import {
   getDocument,
   getDocumentMarkdown,
   getOriginalDocumentUrl,
+  getRecognizedDocumentUrl,
+  getRecognizedFilename,
   type DocumentListItem,
 } from '../services/api';
 
@@ -22,6 +24,8 @@ const markdown = ref('');
 const loading = ref(true);
 const originalUrl = computed(() => getOriginalDocumentUrl(documentId.value));
 const originalFilename = computed(() => document.value?.original_filename ?? 'document');
+const recognizedUrl = computed(() => getRecognizedDocumentUrl(documentId.value));
+const recognizedFilename = computed(() => getRecognizedFilename(originalFilename.value));
 const markdownRenderer = new MarkdownIt({
   breaks: true,
   html: false,
@@ -47,14 +51,24 @@ onMounted(async () => {
     <section v-else>
       <div class="document-actions">
         <h1>{{ t('document.recognized') }}</h1>
-        <a :href="originalUrl" :download="originalFilename">
-          <Button
-            :aria-label="t('document.downloadOriginal')"
-            :title="t('document.downloadOriginal')"
-            icon="pi pi-download"
-            rounded
-          />
-        </a>
+        <div class="document-download-actions">
+          <a :href="originalUrl" :download="originalFilename">
+            <Button
+              :aria-label="t('document.downloadOriginal')"
+              :title="t('document.downloadOriginal')"
+              icon="pi pi-download"
+              rounded
+            />
+          </a>
+          <a :href="recognizedUrl" :download="recognizedFilename">
+            <Button
+              :aria-label="t('document.downloadRecognized')"
+              :title="t('document.downloadRecognized')"
+              icon="pi pi-file"
+              rounded
+            />
+          </a>
+        </div>
       </div>
 
       <article class="markdown-reader" v-html="renderedMarkdown"></article>
