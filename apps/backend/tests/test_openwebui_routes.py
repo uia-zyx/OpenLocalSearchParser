@@ -68,6 +68,7 @@ def test_openwebui_auth_rejects_wrong_key() -> None:
 
 def test_openwebui_search_results_adapt_local_search_response() -> None:
     document_id = uuid4()
+    source_base_url = "https://www.example.com"
     results = _to_openwebui_search_results(
         [
             SearchResult(
@@ -87,12 +88,12 @@ def test_openwebui_search_results_adapt_local_search_response() -> None:
                 ],
             )
         ],
-        "http://app.local",
+        source_base_url,
     )
 
     assert len(results) == 1
     assert results[0].title == "Equations"
-    assert results[0].link == f"http://app.local/documents/{document_id}"
+    assert results[0].link == f"{source_base_url}/documents/{document_id}"
     assert "корни уравнения" in results[0].snippet
     assert "внутри интервала" in results[0].snippet
 
