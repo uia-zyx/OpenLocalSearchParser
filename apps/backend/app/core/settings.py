@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     llama_ocr_base_url: str = "http://llama-ocr:8080/v1"
     llama_ocr_model: str = "glm-ocr"
 
-    llama_embedding_base_url: str = "http://llama-embedding:8081/v1"
+    llama_embedding_base_url: str = "http://llama-embedding:8080/v1"
     llama_embedding_model: str = "qwen3-embedding"
     embedding_dimensions: int = 1024
 

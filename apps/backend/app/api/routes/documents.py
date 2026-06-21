@@ -1,4 +1,6 @@
 from uuid import UUID
+from pathlib import Path
+from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import Response
@@ -70,7 +72,16 @@ async def get_original_document(
         content=document.original_content,
         media_type=document.mime_type,
         headers={
-            "Content-Disposition": f'attachment; filename="{document.original_filename}"',
+            "Content-Disposition": _content_disposition(document.original_filename),
         },
     )
+
+
+def _content_disposition(filename: str) -> str:
+    ascii_filename = filename.encode("ascii", errors="ignore").decode("ascii").strip()
+    if not ascii_filename or ascii_filename == Path(filename).suffix:
+        ascii_filename = f"document{Path(filename).suffix}"
+
+    utf8_filename = quote(filename)
+    return f'attachment; filename="{ascii_filename}"; filename*=UTF-8\'\'{utf8_filename}'
 
