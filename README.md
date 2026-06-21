@@ -1,4 +1,4 @@
-# LocaScanScribe.AI
+# LocaScanScribe
 
 **Local document search and OCR platform with Markdown-based document representation.**
 
@@ -10,14 +10,14 @@
 
 ### Overview
 
-LocaScanScribe.AI is an application for local deployment that processes PDFs, images, Office files, plain text, and Markdown documents. It stores the original uploaded file, converts recognized content into Markdown, and provides search results with document links and matching text fragments.
+LocaScanScribe is an application for local deployment that processes PDFs, images, Office files, plain text, and Markdown documents. It stores the original uploaded file, converts recognized content into Markdown, and provides search results with document links and matching text fragments.
 
 The system is designed for environments where document processing should run on local infrastructure. OCR and embedding services are provided by local `llama.cpp` containers, while the application stack is managed with Docker Compose.
 
 ### Capabilities
 
 - PDF processing through page rendering and OCR recognition.
-- Image OCR through an OpenAI-compatible local model endpoint.
+- Image OCR through a local model-compatible endpoint.
 - Parser-based processing for Office, text, and Markdown files.
 - Markdown preview for recognized documents and search snippets.
 - Document operations: list, open, rename, delete, download original file, and download recognized Markdown.
@@ -113,11 +113,11 @@ Set Web Search Engine to `external` and use the same host that serves the backen
 - External Loader URL: `http://<backend-host>:8000/api/openwebui/web-loader`
 - External Search API Key: value of `OPENWEBUI_WEB_SEARCH_API_KEY`
 
-Returned document links are generated from the incoming request host or `Origin` header. For snippet-based results, enable bypass embedding and retrieval and bypass web loader in Open WebUI. For full recognized Markdown, configure the external loader URL and keep web loader bypass disabled.
+Returned document links use the incoming request host or `Origin` header. For snippet-based results, enable bypass embedding and retrieval and bypass web loader in Open WebUI. For full recognized Markdown, configure the external loader URL and keep web loader bypass disabled.
 
 ### MCP Server
 
-The backend exposes selected FastAPI operations as MCP tools over Streamable HTTP:
+The backend exposes selected FastAPI operations through MCP over Streamable HTTP:
 
 ```json
 {
@@ -129,7 +129,7 @@ The backend exposes selected FastAPI operations as MCP tools over Streamable HTT
 }
 ```
 
-Published tools cover health checks, document listing, document metadata, recognized Markdown, vector reindexing, and embedding-based search. Binary downloads remain available through the regular HTTP API.
+Published operations cover health checks, document listing, document metadata, recognized Markdown, vector reindexing, and embedding-based search. Binary downloads remain available through the regular HTTP API.
 
 ---
 
@@ -137,14 +137,14 @@ Published tools cover health checks, document listing, document metadata, recogn
 
 ### Обзор
 
-LocaScanScribe.AI — приложение для локального развертывания, предназначенное для обработки PDF, изображений, Office-файлов, обычного текста и Markdown-документов. Система сохраняет исходный файл, преобразует распознанное содержимое в Markdown и предоставляет поиск по документам с ссылками и фрагментами совпадений.
+LocaScanScribe — приложение для локального развертывания, предназначенное для обработки PDF, изображений, Office-файлов, обычного текста и Markdown-документов. Система сохраняет исходный файл, преобразует распознанное содержимое в Markdown и предоставляет поиск по документам с ссылками и фрагментами совпадений.
 
 Система рассчитана на сценарии, где обработка документов должна выполняться на локальной инфраструктуре. OCR и embeddings обслуживаются локальными контейнерами `llama.cpp`, а весь стек запускается через Docker Compose.
 
 ### Возможности
 
 - Обработка PDF через рендеринг страниц и OCR-распознавание.
-- OCR изображений через локальный OpenAI-compatible endpoint модели.
+- OCR изображений через локальный model-compatible endpoint.
 - Parser-based обработка Office-файлов, текста и Markdown.
 - Markdown preview для распознанных документов и фрагментов поиска.
 - Операции с документами: список, открытие, переименование, удаление, скачивание оригинала и распознанного Markdown.
@@ -240,11 +240,11 @@ docker compose -f deploy/docker-compose.yml up -d --build
 - External Loader URL: `http://<backend-host>:8000/api/openwebui/web-loader`
 - External Search API Key: значение `OPENWEBUI_WEB_SEARCH_API_KEY`
 
-Ссылки на документы генерируются от host входящего запроса или `Origin` header. Для быстрых результатов по snippets включите bypass embedding and retrieval и bypass web loader в Open WebUI. Для полного распознанного Markdown настройте external loader URL и отключите bypass web loader.
+Ссылки на документы используют host входящего запроса или `Origin` header. Для быстрых результатов по snippets включите bypass embedding and retrieval и bypass web loader в Open WebUI. Для полного распознанного Markdown настройте external loader URL и отключите bypass web loader.
 
 ### MCP Server
 
-Backend публикует выбранные FastAPI операции как MCP tools через Streamable HTTP:
+Backend публикует выбранные FastAPI операции через MCP по Streamable HTTP:
 
 ```json
 {
@@ -256,5 +256,5 @@ Backend публикует выбранные FastAPI операции как MC
 }
 ```
 
-Опубликованные tools покрывают health check, список документов, metadata документа, распознанный Markdown, переиндексацию vector store и поиск через embeddings. Скачивание бинарных файлов остаётся в обычном HTTP API.
+Опубликованные операции покрывают health check, список документов, metadata документа, распознанный Markdown, переиндексацию vector store и поиск через embeddings. Скачивание бинарных файлов остаётся в обычном HTTP API.
 

@@ -26,9 +26,9 @@ def mount_mcp_server(app: FastAPI) -> None:
     fastapi_mcp: Any = import_module("fastapi_mcp")
     mcp = fastapi_mcp.FastApiMCP(
         app,
-        name="LocaScanScribe.AI MCP Server",
+        name="LocaScanScribe MCP Server",
         description=(
-            "MCP tools for checking health, listing documents, reading recognized Markdown, "
+            "Tools for checking health, listing documents, reading recognized Markdown, "
             "reindexing vectors, and searching local documents with embeddings."
         ),
         include_operations=MCP_OPERATION_IDS,
@@ -45,7 +45,7 @@ def create_app() -> FastAPI:
         title=settings.app_name,
         summary="Local OCR, Markdown, embedding, and document search API.",
         description=(
-            "LocaScanScribe.AI exposes a local-first API for uploading documents, "
+            "LocaScanScribe exposes an API for uploading documents, "
             "running OCR/parsing, storing recognized Markdown, indexing chunks in Qdrant, "
             "searching through embeddings, and integrating with Open WebUI external search."
         ),
@@ -91,7 +91,7 @@ def create_app() -> FastAPI:
             <!doctype html>
             <html>
               <head>
-                <title>LocaScanScribe.AI API Reference</title>
+                <title>LocaScanScribe API Reference</title>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
               </head>
