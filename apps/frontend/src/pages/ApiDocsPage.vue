@@ -9,7 +9,7 @@ const apiBaseUrl = computed(() => {
   const { hostname, protocol } = window.location;
   return `${protocol}//${hostname}:8000`;
 });
-const openWebUiApiKey = 'locascan-openwebui-local-key';
+const openWebUiApiKeyEnv = 'OPENWEBUI_WEB_SEARCH_API_KEY';
 </script>
 
 <template>
@@ -63,7 +63,7 @@ const openWebUiApiKey = 'locascan-openwebui-local-key';
           </div>
           <div>
             <span>{{ t('apiDocs.openWebUi.externalApiKey') }}</span>
-            <code>{{ openWebUiApiKey }}</code>
+            <code>{{ openWebUiApiKeyEnv }}</code>
           </div>
           <div>
             <span>{{ t('apiDocs.openWebUi.frontendBaseUrl') }}</span>
