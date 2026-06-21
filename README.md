@@ -1,39 +1,33 @@
 # LocaScanScribe.AI
 
-**Local-first document search with OCR, Markdown recognition, and a Google-like UI.**
+**Local document search and OCR platform with Markdown-based document representation.**
 
-**Локальный поисковик по документам с OCR, распознаванием в Markdown и интерфейсом в стиле Google.**
-
-![Local-first](https://img.shields.io/badge/local--first-yes-16a34a)
-![Docker](https://img.shields.io/badge/docker-compose-2563eb)
-![Vue 3](https://img.shields.io/badge/Vue-3-42b883)
-![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688)
-![llama.cpp](https://img.shields.io/badge/llama.cpp-GPU-7c3aed)
+**Локальная платформа для поиска по документам, OCR-обработки и представления распознанного содержимого в Markdown.**
 
 ---
 
 ## English
 
-### What Is It?
+### Overview
 
-LocaScanScribe.AI is a local document search application for PDFs, images, Office files, and text/Markdown documents. It converts uploaded files into readable Markdown, keeps the original file available for download, and exposes a clean search experience with document links and matching snippets.
+LocaScanScribe.AI is an application for local deployment that processes PDFs, images, Office files, plain text, and Markdown documents. It stores the original uploaded file, converts recognized content into Markdown, and provides search results with document links and matching text fragments.
 
-The project is designed for private, local workflows: OCR and embeddings run through local `llama.cpp` Docker services, and the app is orchestrated with Docker Compose.
+The system is designed for environments where document processing should run on local infrastructure. OCR and embedding services are provided by local `llama.cpp` containers, while the application stack is managed with Docker Compose.
 
-### Highlights
+### Capabilities
 
-- **Local OCR pipeline**: PDF pages are rendered into images, then recognized by a local OCR model through an OpenAI-compatible `llama.cpp` API.
-- **GPU-ready model serving**: OCR and embedding services run with CUDA-enabled `llama.cpp` containers.
-- **Markdown-first documents**: recognized content is shown as rich Markdown with math/formula rendering support.
-- **Google-like search UI**: search box, answer card, document links, and matching snippets.
-- **Upload workflows**: PDF, images, Office files, text, and Markdown upload tabs.
-- **Document management**: list, open, rename, delete, download original, and download recognized Markdown.
-- **Internationalized UI**: English and Russian interface.
-- **Docker Compose stack**: frontend, backend, PostgreSQL, Qdrant, Redis, MinIO, OCR model, and embedding model services.
+- PDF processing through page rendering and OCR recognition.
+- Image OCR through an OpenAI-compatible local model endpoint.
+- Parser-based processing for Office, text, and Markdown files.
+- Markdown preview for recognized documents and search snippets.
+- Document operations: list, open, rename, delete, download original file, and download recognized Markdown.
+- Search interface with answer summary, document links, and text fragments.
+- Internationalized frontend with English and Russian locales.
+- Docker Compose deployment with frontend, backend, PostgreSQL, Qdrant, Redis, MinIO, OCR, and embedding services.
 
 ### Current Status
 
-The application is functional as a local prototype with real OCR, upload, document listing, Markdown preview, and search endpoints.
+The application currently includes document upload, OCR processing, document listing, Markdown preview, and search endpoints.
 
 Important: document metadata and recognized content are currently stored in the backend in-memory repository. After a backend restart or container rebuild, uploaded documents disappear. PostgreSQL, MinIO, and Qdrant are already part of the stack and are the intended persistence layer for the next implementation step.
 
@@ -53,8 +47,8 @@ Runtime services:
 
 - `frontend`: Vue 3 application served on `http://localhost:3000`
 - `backend`: FastAPI API served on `http://localhost:8000`
-- `llama-ocr`: local OCR model server
-- `llama-embedding`: local embedding model server
+- `llama-ocr`: OCR model server
+- `llama-embedding`: embedding model server
 - `postgres`: metadata persistence target
 - `qdrant`: vector search persistence target
 - `redis`: background processing/cache target
@@ -62,7 +56,7 @@ Runtime services:
 
 ### Models
 
-Model binaries are intentionally local-only and ignored by Git. Put them in `model/`:
+Model binaries are ignored by Git. Place them in `model/`:
 
 - `GLM-OCR-Q8_0.gguf`
 - `mmproj-GLM-OCR-Q8_0.gguf`
@@ -74,12 +68,12 @@ The embedding service runs with:
 --embedding --pooling last
 ```
 
-### Quick Start
+### Installation
 
 Requirements:
 
 - Docker Desktop
-- NVIDIA GPU + NVIDIA Container Toolkit for GPU inference
+- NVIDIA GPU and NVIDIA Container Toolkit for GPU inference
 - Local GGUF files in `model/`
 
 Run:
@@ -96,7 +90,7 @@ Open:
 - MinIO Console: `http://localhost:9001`
 - Qdrant: `http://localhost:6333`
 
-### OCR Flow
+### PDF OCR Flow
 
 ```text
 PDF upload
@@ -122,26 +116,26 @@ Images go directly to OCR. Office and text formats go through the parser path.
 
 ## Русский
 
-### Что Это?
+### Обзор
 
-LocaScanScribe.AI — локальное приложение для поиска по PDF, изображениям, Office-файлам, текстовым и Markdown-документам. Загруженные файлы распознаются и приводятся к читаемому Markdown, оригинал остаётся доступен для скачивания, а поиск показывает документы и фрагменты совпадений.
+LocaScanScribe.AI — приложение для локального развертывания, предназначенное для обработки PDF, изображений, Office-файлов, обычного текста и Markdown-документов. Система сохраняет исходный файл, преобразует распознанное содержимое в Markdown и предоставляет поиск по документам с ссылками и фрагментами совпадений.
 
-Проект ориентирован на приватный локальный сценарий: OCR и embeddings работают через локальные Docker-сервисы `llama.cpp`, всё поднимается через Docker Compose.
+Система рассчитана на сценарии, где обработка документов должна выполняться на локальной инфраструктуре. OCR и embeddings обслуживаются локальными контейнерами `llama.cpp`, а весь стек запускается через Docker Compose.
 
 ### Возможности
 
-- **Локальный OCR pipeline**: страницы PDF сначала превращаются в изображения, затем отправляются в OCR-модель через OpenAI-compatible API `llama.cpp`.
-- **GPU inference**: OCR и embedding модели запускаются в CUDA-контейнерах `llama.cpp`.
-- **Markdown-first подход**: распознанный документ отображается как визуальный Markdown с поддержкой формул.
-- **Поиск в стиле Google**: строка поиска, карточка ответа, ссылки на документы и фрагменты совпадений.
-- **Загрузка документов**: вкладки для PDF, изображений, Office-файлов, текста и Markdown.
-- **CRUD документов**: список, открытие, переименование, удаление, скачивание оригинала и распознанного Markdown.
-- **i18n**: интерфейс на русском и английском.
-- **Docker Compose стек**: frontend, backend, PostgreSQL, Qdrant, Redis, MinIO, OCR и embedding модели.
+- Обработка PDF через рендеринг страниц и OCR-распознавание.
+- OCR изображений через локальный OpenAI-compatible endpoint модели.
+- Parser-based обработка Office-файлов, текста и Markdown.
+- Markdown preview для распознанных документов и фрагментов поиска.
+- Операции с документами: список, открытие, переименование, удаление, скачивание оригинала и распознанного Markdown.
+- Поисковый интерфейс с кратким ответом, ссылками на документы и фрагментами совпадений.
+- Интерфейс на русском и английском языках.
+- Docker Compose стек с frontend, backend, PostgreSQL, Qdrant, Redis, MinIO, OCR и embedding сервисами.
 
 ### Текущий Статус
 
-Приложение уже работает как локальный прототип: есть OCR, загрузка, список документов, Markdown preview и поисковые API.
+Приложение включает загрузку документов, OCR-обработку, список документов, Markdown preview и поисковые API.
 
 Важно: сейчас metadata, оригиналы и распознанный Markdown хранятся в in-memory репозитории backend. После перезапуска backend или пересборки контейнера загруженные документы исчезают. PostgreSQL, MinIO и Qdrant уже подключены в Docker Compose и запланированы как постоянный слой хранения на следующем этапе.
 
@@ -161,8 +155,8 @@ model/
 
 - `frontend`: Vue 3 приложение на `http://localhost:3000`
 - `backend`: FastAPI API на `http://localhost:8000`
-- `llama-ocr`: локальный OCR model server
-- `llama-embedding`: локальный embedding model server
+- `llama-ocr`: OCR model server
+- `llama-embedding`: embedding model server
 - `postgres`: целевое хранение metadata
 - `qdrant`: целевое хранение векторов
 - `redis`: очередь/кэш для фоновой обработки
@@ -170,7 +164,7 @@ model/
 
 ### Модели
 
-Файлы моделей локальные и игнорируются Git. Положите их в `model/`:
+Файлы моделей игнорируются Git. Положите их в `model/`:
 
 - `GLM-OCR-Q8_0.gguf`
 - `mmproj-GLM-OCR-Q8_0.gguf`
@@ -182,12 +176,12 @@ Embedding service запускается с:
 --embedding --pooling last
 ```
 
-### Быстрый Старт
+### Установка
 
 Требования:
 
 - Docker Desktop
-- NVIDIA GPU + NVIDIA Container Toolkit для GPU inference
+- NVIDIA GPU и NVIDIA Container Toolkit для GPU inference
 - GGUF модели в `model/`
 
 Запуск:
@@ -204,7 +198,7 @@ docker compose -f deploy/docker-compose.yml up -d --build
 - MinIO Console: `http://localhost:9001`
 - Qdrant: `http://localhost:6333`
 
-### OCR Flow
+### PDF OCR Flow
 
 ```text
 Загрузка PDF
