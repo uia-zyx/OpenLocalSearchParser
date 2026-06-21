@@ -3,6 +3,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import ProgressSpinner from 'primevue/progressspinner';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 
 import { useSearchStore } from '../stores/searchStore';
@@ -10,6 +11,7 @@ import { useSearchStore } from '../stores/searchStore';
 const route = useRoute();
 const router = useRouter();
 const store = useSearchStore();
+const { t } = useI18n();
 const query = ref(String(route.query.q ?? ''));
 
 async function submitSearch() {
@@ -31,8 +33,8 @@ if (query.value) {
     <section class="hero-search">
       <h1>LocaScanScribe.AI</h1>
       <form class="search-box" @submit.prevent="submitSearch">
-        <InputText v-model="query" class="search-input" placeholder="Search local documents" />
-        <Button label="Search" type="submit" />
+        <InputText v-model="query" class="search-input" :placeholder="t('search.placeholder')" />
+        <Button :label="t('search.button')" type="submit" />
       </form>
     </section>
 

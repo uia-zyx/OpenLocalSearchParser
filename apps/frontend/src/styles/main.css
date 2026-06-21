@@ -30,9 +30,26 @@ a:hover {
   padding: 1rem 2rem;
 }
 
-.top-nav nav {
+.main-nav {
+  align-items: center;
   display: flex;
   gap: 1rem;
+}
+
+.language-select {
+  align-items: center;
+  color: #4b5563;
+  display: flex;
+  font-size: 0.9rem;
+  gap: 0.5rem;
+}
+
+.language-select select {
+  border: 1px solid #d1d5db;
+  border-radius: 0.4rem;
+  background: #ffffff;
+  color: #111827;
+  padding: 0.25rem 0.5rem;
 }
 
 .brand {

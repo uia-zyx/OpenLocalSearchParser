@@ -40,7 +40,7 @@ This is the first implementation slice:
 - Docker Compose stack.
 - FastAPI upload/search endpoints.
 - Vue Google-like search UI.
-- Upload tabs for PDF/PBF, images, Office, and text/Markdown.
+- Upload tabs for PDF, images, Office, and text/Markdown.
 - Local-only model folder ignored by git.
 
 The current parser/search path is intentionally minimal and will be replaced by real PostgreSQL, MinIO, Qdrant, OCR, parser, and embedding implementations in the next slices.
