@@ -8,11 +8,13 @@ import { useI18n } from 'vue-i18n';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 
 import { useSearchStore } from '../stores/searchStore';
+import { useTheme } from '../theme';
 
 const route = useRoute();
 const router = useRouter();
 const store = useSearchStore();
 const { t } = useI18n();
+const { markdownPreviewTheme } = useTheme();
 const query = ref(String(route.query.q ?? ''));
 const answer = computed(() => {
   if (!store.query) {
@@ -73,7 +75,7 @@ if (query.value) {
           class="search-markdown-preview"
           :model-value="answer"
           preview-theme="github"
-          theme="light"
+          :theme="markdownPreviewTheme"
         />
       </article>
 
@@ -87,7 +89,7 @@ if (query.value) {
           class="snippet search-markdown-preview"
           :model-value="snippet.phrase"
           preview-theme="github"
-          theme="light"
+          :theme="markdownPreviewTheme"
         />
       </article>
     </section>

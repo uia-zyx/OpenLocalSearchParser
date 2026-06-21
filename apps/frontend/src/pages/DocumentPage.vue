@@ -15,9 +15,11 @@ import {
   getRecognizedFilename,
   type DocumentListItem,
 } from '../services/api';
+import { useTheme } from '../theme';
 
 const route = useRoute();
 const { t } = useI18n();
+const { markdownPreviewTheme } = useTheme();
 const documentId = computed(() => String(route.params.id));
 const document = ref<DocumentListItem | null>(null);
 const markdown = ref('');
@@ -117,7 +119,7 @@ onUnmounted(stopPolling);
         class="markdown-reader"
         :model-value="markdown"
         preview-theme="github"
-        theme="light"
+        :theme="markdownPreviewTheme"
       />
     </section>
   </main>

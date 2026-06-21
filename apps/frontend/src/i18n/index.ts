@@ -12,6 +12,10 @@ export const messages = {
       upload: 'Upload',
       apiDocs: 'API Docs',
       language: 'Language',
+      lightTheme: 'Light',
+      darkTheme: 'Dark',
+      useLightTheme: 'Switch to light theme',
+      useDarkTheme: 'Switch to dark theme',
     },
     search: {
       placeholder: 'Search local documents',
@@ -125,6 +129,10 @@ export const messages = {
       upload: 'Загрузка',
       apiDocs: 'API Docs',
       language: 'Язык',
+      lightTheme: 'Светлая',
+      darkTheme: 'Тёмная',
+      useLightTheme: 'Переключить на светлую тему',
+      useDarkTheme: 'Переключить на тёмную тему',
     },
     search: {
       placeholder: 'Поиск по локальным документам',
