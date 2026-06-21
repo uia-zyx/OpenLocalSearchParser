@@ -14,14 +14,7 @@ from app.parsers.base import ParsedDocument, StoredFile
 
 logger = logging.getLogger(__name__)
 
-OCR_MARKDOWN_PROMPT = """Text Recognition:
-Return only clean GitHub-Flavored Markdown.
-Preserve the original language and reading order.
-Use Markdown headings, paragraphs, lists, and tables where they appear in the image.
-Render tables as valid Markdown tables.
-Wrap inline math in $...$ and display math in $$...$$.
-Do not output raw TeX outside math delimiters.
-Do not add explanations, comments, code fences, filenames, or page titles."""
+OCR_MARKDOWN_PROMPT = "Text Recognition:"
 
 
 class ParserRegistry:
