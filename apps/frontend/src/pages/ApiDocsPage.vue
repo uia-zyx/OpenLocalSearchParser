@@ -13,6 +13,7 @@ const swaggerUrl = computed(() => `${apiBaseUrl.value}/docs`);
 const redocUrl = computed(() => `${apiBaseUrl.value}/redoc`);
 const scalarUrl = computed(() => `${apiBaseUrl.value}/api/reference`);
 const openApiUrl = computed(() => `${apiBaseUrl.value}/openapi.json`);
+const mcpUrl = computed(() => `${apiBaseUrl.value}/mcp`);
 
 const uploadCurlExample = computed(() => `curl -X POST "${apiBaseUrl.value}/api/documents" \\
   -F "strategy=ocr_model" \\
@@ -52,6 +53,14 @@ with httpx.Client(timeout=120) as client:
     )
     search.raise_for_status()
     print(document_id, search.json())`);
+
+const mcpClientConfigExample = computed(() => `{
+  "mcpServers": {
+    "locascan-scribe": {
+      "url": "${mcpUrl.value}"
+    }
+  }
+}`);
 </script>
 
 <template>
@@ -152,6 +161,29 @@ with httpx.Client(timeout=120) as client:
             <li>{{ t('apiDocs.openWebUi.bypassWebLoader') }}</li>
             <li>{{ t('apiDocs.openWebUi.trustProxy') }}</li>
           </ul>
+        </div>
+      </article>
+
+      <article class="docs-card">
+        <h2>{{ t('apiDocs.mcp.title') }}</h2>
+        <p>{{ t('apiDocs.mcp.description') }}</p>
+        <div class="settings-list">
+          <div>
+            <span>{{ t('apiDocs.mcp.transport') }}</span>
+            <code>Streamable HTTP</code>
+          </div>
+          <div>
+            <span>{{ t('apiDocs.mcp.endpoint') }}</span>
+            <code>{{ mcpUrl }}</code>
+          </div>
+          <div>
+            <span>{{ t('apiDocs.mcp.tools') }}</span>
+            <code>health, documents, markdown, reindex, search</code>
+          </div>
+        </div>
+        <div class="recommendation-box">
+          <strong>{{ t('apiDocs.mcp.clientConfig') }}</strong>
+          <pre><code>{{ mcpClientConfigExample }}</code></pre>
         </div>
       </article>
 

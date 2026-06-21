@@ -9,7 +9,12 @@ from app.search.service import SearchService
 router = APIRouter(prefix="/search", tags=["search"])
 
 
-@router.post("", response_model=SearchResponse)
+@router.post(
+    "",
+    response_model=SearchResponse,
+    operation_id="search_documents",
+    summary="Search local documents with embeddings",
+)
 async def search(
     request: SearchRequest,
     service: Annotated[SearchService, Depends(get_search_service)],

@@ -127,6 +127,15 @@ export const messages = {
         trustProxy:
           'Trust provided proxy parameters only when Open WebUI is behind a trusted reverse proxy.',
       },
+      mcp: {
+        title: 'MCP Server',
+        description:
+          'The same backend can be connected to MCP-compatible clients. Tools are generated from selected FastAPI operations and use the existing application logic.',
+        transport: 'Transport',
+        endpoint: 'MCP endpoint',
+        tools: 'Published tools',
+        clientConfig: 'Example MCP client configuration',
+      },
       examples: {
         title: 'Request Examples',
         uploadCurl: 'Upload and queue OCR with curl',
@@ -270,6 +279,15 @@ export const messages = {
           'Включите обход веб-загрузчика, если достаточно snippets. Отключите его и используйте loader URL для полного распознанного Markdown.',
         trustProxy:
           'Доверяйте заданным параметрам прокси только если Open WebUI стоит за доверенным reverse proxy.',
+      },
+      mcp: {
+        title: 'MCP Server',
+        description:
+          'Этот же backend можно подключать к MCP-совместимым клиентам. Tools генерируются из выбранных FastAPI операций и используют существующую логику приложения.',
+        transport: 'Transport',
+        endpoint: 'MCP endpoint',
+        tools: 'Опубликованные tools',
+        clientConfig: 'Пример конфигурации MCP client',
       },
       examples: {
         title: 'Примеры запросов',

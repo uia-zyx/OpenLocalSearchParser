@@ -89,6 +89,7 @@ Open:
 - Frontend: `http://localhost:3000`
 - Backend OpenAPI: `http://localhost:8000/docs`
 - API Documentation: `http://localhost:3000/api-docs`
+- MCP Server: `http://localhost:8000/mcp`
 - MinIO Console: `http://localhost:9001`
 - Qdrant: `http://localhost:6333`
 
@@ -113,6 +114,22 @@ Set Web Search Engine to `external` and use the same host that serves the backen
 - External Search API Key: value of `OPENWEBUI_WEB_SEARCH_API_KEY`
 
 Returned document links are generated from the incoming request host or `Origin` header. For snippet-based results, enable bypass embedding and retrieval and bypass web loader in Open WebUI. For full recognized Markdown, configure the external loader URL and keep web loader bypass disabled.
+
+### MCP Server
+
+The backend exposes selected FastAPI operations as MCP tools over Streamable HTTP:
+
+```json
+{
+  "mcpServers": {
+    "locascan-scribe": {
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+Published tools cover health checks, document listing, document metadata, recognized Markdown, vector reindexing, and embedding-based search. Binary downloads remain available through the regular HTTP API.
 
 ---
 
@@ -199,6 +216,7 @@ docker compose -f deploy/docker-compose.yml up -d --build
 - Frontend: `http://localhost:3000`
 - Backend OpenAPI: `http://localhost:8000/docs`
 - API Documentation: `http://localhost:3000/api-docs`
+- MCP Server: `http://localhost:8000/mcp`
 - MinIO Console: `http://localhost:9001`
 - Qdrant: `http://localhost:6333`
 
@@ -223,4 +241,20 @@ docker compose -f deploy/docker-compose.yml up -d --build
 - External Search API Key: значение `OPENWEBUI_WEB_SEARCH_API_KEY`
 
 Ссылки на документы генерируются от host входящего запроса или `Origin` header. Для быстрых результатов по snippets включите bypass embedding and retrieval и bypass web loader в Open WebUI. Для полного распознанного Markdown настройте external loader URL и отключите bypass web loader.
+
+### MCP Server
+
+Backend публикует выбранные FastAPI операции как MCP tools через Streamable HTTP:
+
+```json
+{
+  "mcpServers": {
+    "locascan-scribe": {
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+Опубликованные tools покрывают health check, список документов, metadata документа, распознанный Markdown, переиндексацию vector store и поиск через embeddings. Скачивание бинарных файлов остаётся в обычном HTTP API.
 

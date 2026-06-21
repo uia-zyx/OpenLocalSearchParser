@@ -34,7 +34,13 @@ from app.search.vector_store import VectorStore
 router = APIRouter(prefix="/documents", tags=["documents"])
 
 
-@router.post("", response_model=DocumentUploadResponse, status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "",
+    response_model=DocumentUploadResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+    operation_id="upload_document",
+    summary="Upload a document for OCR and indexing",
+)
 async def upload_document(
     background_tasks: BackgroundTasks,
     file: Annotated[UploadFile, File(...)],
@@ -63,7 +69,12 @@ async def upload_document(
     )
 
 
-@router.get("", response_model=list[DocumentListItem])
+@router.get(
+    "",
+    response_model=list[DocumentListItem],
+    operation_id="list_documents",
+    summary="List uploaded documents",
+)
 async def list_documents(
     repository: Annotated[DocumentRepository, Depends(get_document_repository)],
 ) -> list[DocumentListItem]:
@@ -80,7 +91,11 @@ async def list_documents(
     ]
 
 
-@router.post("/reindex-vectors")
+@router.post(
+    "/reindex-vectors",
+    operation_id="reindex_document_vectors",
+    summary="Reindex recognized documents in Qdrant",
+)
 async def reindex_document_vectors(
     service: Annotated[IngestionService, Depends(get_ingestion_service)],
     settings: Annotated[Settings, Depends(get_settings)],
@@ -92,7 +107,12 @@ async def reindex_document_vectors(
     return {"indexed_documents": indexed_count}
 
 
-@router.get("/{document_id}", response_model=DocumentListItem)
+@router.get(
+    "/{document_id}",
+    response_model=DocumentListItem,
+    operation_id="get_document",
+    summary="Get document metadata",
+)
 async def get_document(
     document_id: UUID,
     repository: Annotated[DocumentRepository, Depends(get_document_repository)],
@@ -111,7 +131,12 @@ async def get_document(
     )
 
 
-@router.put("/{document_id}", response_model=DocumentListItem)
+@router.put(
+    "/{document_id}",
+    response_model=DocumentListItem,
+    operation_id="update_document_title",
+    summary="Update document title",
+)
 async def update_document(
     document_id: UUID,
     request: DocumentUpdateRequest,
@@ -134,7 +159,12 @@ async def update_document(
     )
 
 
-@router.delete("/{document_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{document_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    operation_id="delete_document",
+    summary="Delete document and vectors",
+)
 async def delete_document(
     document_id: UUID,
     repository: Annotated[DocumentRepository, Depends(get_document_repository)],
@@ -155,6 +185,8 @@ async def delete_document(
     "/{document_id}/retry",
     response_model=DocumentListItem,
     status_code=status.HTTP_202_ACCEPTED,
+    operation_id="retry_document_processing",
+    summary="Retry OCR processing for a document",
 )
 async def retry_document_processing(
     document_id: UUID,
@@ -185,7 +217,12 @@ async def retry_document_processing(
     return _document_list_item(document)
 
 
-@router.get("/{document_id}/markdown", response_model=str)
+@router.get(
+    "/{document_id}/markdown",
+    response_model=str,
+    operation_id="get_document_markdown",
+    summary="Get recognized document Markdown",
+)
 async def get_document_markdown(
     document_id: UUID,
     repository: Annotated[DocumentRepository, Depends(get_document_repository)],

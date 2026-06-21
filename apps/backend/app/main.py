@@ -1,3 +1,6 @@
+from importlib import import_module
+from typing import Any
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -5,6 +8,34 @@ from fastapi.responses import HTMLResponse
 from app.api.routes import documents, health, openwebui, search
 from app.core.settings import get_settings
 from app.db.session import init_database
+
+MCP_OPERATION_IDS = [
+    "get_health_status",
+    "list_documents",
+    "get_document",
+    "update_document_title",
+    "delete_document",
+    "retry_document_processing",
+    "get_document_markdown",
+    "reindex_document_vectors",
+    "search_documents",
+]
+
+
+def mount_mcp_server(app: FastAPI) -> None:
+    fastapi_mcp: Any = import_module("fastapi_mcp")
+    mcp = fastapi_mcp.FastApiMCP(
+        app,
+        name="LocaScanScribe.AI MCP Server",
+        description=(
+            "MCP tools for checking health, listing documents, reading recognized Markdown, "
+            "reindexing vectors, and searching local documents with embeddings."
+        ),
+        include_operations=MCP_OPERATION_IDS,
+        describe_all_responses=True,
+        describe_full_response_schema=True,
+    )
+    mcp.mount_http(mount_path="/mcp")
 
 
 def create_app() -> FastAPI:
@@ -27,6 +58,10 @@ def create_app() -> FastAPI:
                 "name": "openwebui",
                 "description": "External web search and loader contract for Open WebUI.",
             },
+            {
+                "name": "mcp",
+                "description": "Model Context Protocol server exposed over Streamable HTTP.",
+            },
         ],
     )
 
@@ -46,6 +81,8 @@ def create_app() -> FastAPI:
     app.include_router(documents.router, prefix="/api")
     app.include_router(search.router, prefix="/api")
     app.include_router(openwebui.router, prefix="/api")
+
+    mount_mcp_server(app)
 
     @app.get("/api/reference", include_in_schema=False)
     def scalar_reference() -> HTMLResponse:
