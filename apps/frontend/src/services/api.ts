@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { type AxiosProgressEvent } from 'axios';
 
 export type ProcessingStrategy = 'parser' | 'scanner_ocr' | 'ocr_model';
 
@@ -53,12 +53,21 @@ export async function searchDocuments(query: string): Promise<SearchResponse> {
 export async function uploadDocument(
   file: File,
   strategy: ProcessingStrategy,
+  onProgress?: (progress: number) => void,
 ): Promise<DocumentUploadResponse> {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('strategy', strategy);
 
-  const response = await api.post<DocumentUploadResponse>('/documents', formData);
+  const response = await api.post<DocumentUploadResponse>('/documents', formData, {
+    onUploadProgress: (event: AxiosProgressEvent) => {
+      if (!event.total) {
+        return;
+      }
+
+      onProgress?.(Math.round((event.loaded / event.total) * 100));
+    },
+  });
   return response.data;
 }
 

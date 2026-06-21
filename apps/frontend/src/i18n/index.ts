@@ -54,6 +54,14 @@ export const messages = {
       chooseFileFirst: 'Choose a file first.',
       uploaded: 'Uploaded {name}; document id {id}',
       duplicate: 'Document {name} already exists; opened existing document id {id}',
+      failed: 'Upload failed',
+      selectedFile: 'Selected file',
+      stages: {
+        uploading: 'Uploading file',
+        processing: 'Recognizing and indexing document',
+        done: 'Done',
+        failed: 'Failed',
+      },
     },
     document: {
       recognized: 'Recognized Document',
@@ -112,6 +120,14 @@ export const messages = {
       chooseFileFirst: 'Сначала выберите файл.',
       uploaded: 'Загружен {name}; document id {id}',
       duplicate: 'Документ {name} уже существует; открыт существующий document id {id}',
+      failed: 'Ошибка загрузки',
+      selectedFile: 'Выбранный файл',
+      stages: {
+        uploading: 'Загрузка файла',
+        processing: 'Распознавание и индексация документа',
+        done: 'Готово',
+        failed: 'Ошибка',
+      },
     },
     document: {
       recognized: 'Распознанный документ',

@@ -172,6 +172,18 @@ a:hover {
   margin-top: 0.3rem;
 }
 
+.status-badge {
+  background: #dcfce7;
+  border-radius: 999px;
+  color: #166534;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+  padding: 0.1rem 0.5rem;
+  text-transform: uppercase;
+}
+
 .document-card-actions {
   align-items: center;
   display: flex;
@@ -213,6 +225,26 @@ a:hover {
 .upload-status {
   color: #15803d;
   margin-top: 1rem;
+}
+
+.selected-file {
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.upload-progress-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.progress-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
 }
 
 .document-actions {

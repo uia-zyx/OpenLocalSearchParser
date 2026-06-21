@@ -19,6 +19,8 @@ const loading = ref(true);
 const error = ref('');
 const editingId = ref<string | null>(null);
 const editingTitle = ref('');
+const savingId = ref<string | null>(null);
+const deletingId = ref<string | null>(null);
 
 async function loadDocuments() {
   try {
@@ -47,11 +49,16 @@ async function saveTitle(document: DocumentListItem) {
     return;
   }
 
-  const updatedDocument = await updateDocumentTitle(document.id, nextTitle);
-  documents.value = documents.value.map((item) =>
-    item.id === updatedDocument.id ? updatedDocument : item,
-  );
-  cancelEdit();
+  try {
+    savingId.value = document.id;
+    const updatedDocument = await updateDocumentTitle(document.id, nextTitle);
+    documents.value = documents.value.map((item) =>
+      item.id === updatedDocument.id ? updatedDocument : item,
+    );
+    cancelEdit();
+  } finally {
+    savingId.value = null;
+  }
 }
 
 async function removeDocument(document: DocumentListItem) {
@@ -59,8 +66,13 @@ async function removeDocument(document: DocumentListItem) {
     return;
   }
 
-  await deleteDocument(document.id);
-  documents.value = documents.value.filter((item) => item.id !== document.id);
+  try {
+    deletingId.value = document.id;
+    await deleteDocument(document.id);
+    documents.value = documents.value.filter((item) => item.id !== document.id);
+  } finally {
+    deletingId.value = null;
+  }
 }
 
 onMounted(loadDocuments);
@@ -92,14 +104,27 @@ onMounted(loadDocuments);
         <div class="document-card-main">
           <div v-if="editingId === document.id" class="document-edit-form">
             <input v-model="editingTitle" class="document-title-input" />
-            <Button :label="t('documents.save')" size="small" @click="saveTitle(document)" />
-            <Button :label="t('documents.cancel')" size="small" text @click="cancelEdit" />
+            <Button
+              :disabled="!editingTitle.trim()"
+              :label="t('documents.save')"
+              :loading="savingId === document.id"
+              size="small"
+              @click="saveTitle(document)"
+            />
+            <Button
+              :disabled="savingId === document.id"
+              :label="t('documents.cancel')"
+              size="small"
+              text
+              @click="cancelEdit"
+            />
           </div>
           <RouterLink v-else class="result-title" :to="`/documents/${document.id}`">
             {{ document.title }}
           </RouterLink>
           <div class="document-meta">
-            {{ document.original_filename }} · {{ document.mime_type }} · {{ document.status }}
+            {{ document.original_filename }} · {{ document.mime_type }}
+            <span class="status-badge">{{ document.status }}</span>
           </div>
         </div>
 
@@ -112,11 +137,13 @@ onMounted(loadDocuments);
             :label="t('documents.rename')"
             icon="pi pi-pencil"
             text
+            :disabled="deletingId === document.id"
             @click="startEdit(document)"
           />
           <Button
             :label="t('documents.delete')"
             icon="pi pi-trash"
+            :loading="deletingId === document.id"
             severity="danger"
             text
             @click="removeDocument(document)"
