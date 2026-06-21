@@ -34,13 +34,9 @@ class ParserRegistry:
 
     async def _parse_with_best_available_scanner(self, file: StoredFile) -> ParsedDocument:
         if self._is_pdf(file):
-            return await self._parse_with_ocr_model(file, strategy=ProcessingStrategy.scanner_ocr)
+            return await self._parse_pdf_with_libraries(file, ProcessingStrategy.scanner_ocr)
 
-        parsed = await self._parse_with_markitdown(file, ProcessingStrategy.scanner_ocr)
-        if self._has_meaningful_content(parsed.markdown):
-            return parsed
-
-        return await self._parse_with_ocr_model(file, strategy=ProcessingStrategy.scanner_ocr)
+        return await self._parse_with_markitdown(file, ProcessingStrategy.scanner_ocr)
 
     async def _parse_with_markitdown(
         self,
@@ -84,6 +80,31 @@ class ParserRegistry:
             temp_file.flush()
             result = self.markitdown.convert(temp_file.name)
             return result.text_content
+
+    async def _parse_pdf_with_libraries(
+        self,
+        file: StoredFile,
+        strategy: ProcessingStrategy,
+    ) -> ParsedDocument:
+        markdown = await asyncio.to_thread(self._extract_pdf_text_with_pymupdf, file)
+        if not self._has_meaningful_content(markdown):
+            markdown = await asyncio.to_thread(self._convert_with_markitdown, file)
+
+        return ParsedDocument(
+            title=file.filename,
+            markdown=self._normalize_markdown(file.filename, markdown),
+            strategy=strategy,
+        )
+
+    def _extract_pdf_text_with_pymupdf(self, file: StoredFile) -> str:
+        pages: list[str] = []
+        with fitz.open(stream=file.content, filetype="pdf") as document:
+            for page_index, page in enumerate(document, start=1):
+                page_text = page.get_text("text").strip()
+                if page_text:
+                    pages.append(f"## Page {page_index}\n\n{page_text}")
+
+        return "\n\n".join(pages)
 
     async def _ocr_pdf_pages(self, file: StoredFile) -> str:
         with fitz.open(stream=file.content, filetype="pdf") as document:
