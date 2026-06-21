@@ -86,6 +86,12 @@ services:
       - "999"
       - "--model"
       - "/models/GLM-OCR-Q8_0.gguf"
+      - "--mmproj"
+      - "/models/mmproj-GLM-OCR-Q8_0.gguf"
+      - "--flash-attn"
+      - "off"
+      - "-fit"
+      - "off"
     volumes:
       - ../model:/models:ro
 
