@@ -106,6 +106,7 @@ export const messages = {
         list: 'List documents with status and processing strategy.',
         markdown: 'Return recognized Markdown for a document.',
         search: 'Search indexed local documents.',
+        mcpSearch: 'Search endpoint exposed in OpenAPI and published as an MCP tool.',
         reindex: 'Rebuild Qdrant vectors for recognized Markdown documents.',
       },
       openWebUi: {
@@ -140,6 +141,7 @@ export const messages = {
         title: 'Request Examples',
         uploadCurl: 'Upload and queue OCR with curl',
         searchCurl: 'Search indexed documents with curl',
+        mcpSearchCurl: 'Search through MCP tools/call',
         openWebUiSearchCurl: 'Open WebUI external search request',
         openWebUiLoaderCurl: 'Open WebUI external loader request',
         pythonTitle: 'Python httpx example',
@@ -260,6 +262,7 @@ export const messages = {
         list: 'Получить список документов со статусом и стратегией обработки.',
         markdown: 'Получить распознанный Markdown документа.',
         search: 'Выполнить поиск по локально проиндексированным документам.',
+        mcpSearch: 'Search endpoint, доступный в OpenAPI и опубликованный как MCP tool.',
         reindex: 'Пересобрать Qdrant-векторы для уже распознанных Markdown документов.',
       },
       openWebUi: {
@@ -294,6 +297,7 @@ export const messages = {
         title: 'Примеры запросов',
         uploadCurl: 'Загрузка и постановка OCR в очередь через curl',
         searchCurl: 'Поиск по проиндексированным документам через curl',
+        mcpSearchCurl: 'Поиск через MCP tools/call',
         openWebUiSearchCurl: 'Запрос external search для Open WebUI',
         openWebUiLoaderCurl: 'Запрос external loader для Open WebUI',
         pythonTitle: 'Пример на Python httpx',

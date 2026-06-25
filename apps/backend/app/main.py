@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
-from app.api.routes import documents, health, openwebui, search
+from app.api.routes import documents, health, mcp, openwebui, search
 from app.core.settings import get_settings
 from app.db.session import init_database
 
@@ -18,7 +18,7 @@ MCP_OPERATION_IDS = [
     "retry_document_processing",
     "get_document_markdown",
     "reindex_document_vectors",
-    "search_documents",
+    "mcp_search_documents",
 ]
 
 
@@ -29,7 +29,7 @@ def mount_mcp_server(app: FastAPI) -> None:
         name="LocaScanScribe MCP Server",
         description=(
             "Tools for checking health, listing documents, reading recognized Markdown, "
-            "reindexing vectors, and searching local documents with embeddings."
+            "reindexing vectors, and searching local documents."
         ),
         include_operations=MCP_OPERATION_IDS,
         describe_all_responses=True,
@@ -81,6 +81,7 @@ def create_app() -> FastAPI:
     app.include_router(documents.router, prefix="/api")
     app.include_router(search.router, prefix="/api")
     app.include_router(openwebui.router, prefix="/api")
+    app.include_router(mcp.router, prefix="/api")
 
     mount_mcp_server(app)
 

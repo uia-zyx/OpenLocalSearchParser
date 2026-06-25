@@ -23,6 +23,23 @@ const searchCurlExample = computed(() => `curl -X POST "${apiBaseUrl.value}/api/
   -H "Content-Type: application/json" \\
   -d '{"query":"корни уравнения","limit":5}'`);
 
+const mcpSearchCurlExample = computed(() => `curl -X POST "${apiBaseUrl.value}/mcp" \\
+  -H "Accept: application/json, text/event-stream" \\
+  -H "Content-Type: application/json" \\
+  -H "mcp-session-id: <session-id-from-initialize>" \\
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+      "name": "mcp_search_documents",
+      "arguments": {
+        "query": "корни уравнения",
+        "limit": 5
+      }
+    }
+  }'`);
+
 const openWebUiSearchExample = computed(() => `curl -X POST "${apiBaseUrl.value}/api/openwebui/web-search" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer \${${openWebUiApiKeyEnv}}" \\
@@ -120,6 +137,10 @@ const mcpClientConfigExample = computed(() => `{
             <p>{{ t('apiDocs.core.search') }}</p>
           </div>
           <div>
+            <code>POST /api/mcp/search</code>
+            <p>{{ t('apiDocs.core.mcpSearch') }}</p>
+          </div>
+          <div>
             <code>POST /api/documents/reindex-vectors</code>
             <p>{{ t('apiDocs.core.reindex') }}</p>
           </div>
@@ -178,7 +199,7 @@ const mcpClientConfigExample = computed(() => `{
           </div>
           <div>
             <span>{{ t('apiDocs.mcp.tools') }}</span>
-            <code>health, documents, markdown, reindex, search</code>
+            <code>get_health_status, list_documents, get_document_markdown, mcp_search_documents</code>
           </div>
         </div>
         <div class="recommendation-box">
@@ -197,6 +218,10 @@ const mcpClientConfigExample = computed(() => `{
           <div>
             <h3>{{ t('apiDocs.examples.searchCurl') }}</h3>
             <pre><code>{{ searchCurlExample }}</code></pre>
+          </div>
+          <div>
+            <h3>{{ t('apiDocs.examples.mcpSearchCurl') }}</h3>
+            <pre><code>{{ mcpSearchCurlExample }}</code></pre>
           </div>
           <div>
             <h3>{{ t('apiDocs.examples.openWebUiSearchCurl') }}</h3>
