@@ -14,6 +14,7 @@ const redocUrl = computed(() => `${apiBaseUrl.value}/redoc`);
 const scalarUrl = computed(() => `${apiBaseUrl.value}/api/reference`);
 const openApiUrl = computed(() => `${apiBaseUrl.value}/openapi.json`);
 const mcpUrl = computed(() => `${apiBaseUrl.value}/mcp`);
+const dockerMcpUrl = 'http://host.docker.internal:8000/mcp';
 
 const uploadCurlExample = computed(() => `curl -X POST "${apiBaseUrl.value}/api/documents" \\
   -F "strategy=ocr_model" \\
@@ -196,6 +197,14 @@ const mcpClientConfigExample = computed(() => `{
           <div>
             <span>{{ t('apiDocs.mcp.endpoint') }}</span>
             <code>{{ mcpUrl }}</code>
+          </div>
+          <div>
+            <span>{{ t('apiDocs.mcp.dockerEndpoint') }}</span>
+            <code>{{ dockerMcpUrl }}</code>
+          </div>
+          <div>
+            <span>{{ t('apiDocs.mcp.openapiDiscovery') }}</span>
+            <code>{{ mcpUrl }}/openapi.json</code>
           </div>
           <div>
             <span>{{ t('apiDocs.mcp.tools') }}</span>

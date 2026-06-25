@@ -129,12 +129,15 @@ The backend exposes selected FastAPI operations through MCP over Streamable HTTP
 }
 ```
 
+For clients running inside Docker containers, use `http://host.docker.internal:8000/mcp` instead of `localhost`.
+
 Published operations cover health checks, document listing, document metadata, recognized Markdown, vector reindexing, and document search. Binary downloads remain available through the regular HTTP API.
 
 Search is available through both interfaces:
 
 - OpenAPI/HTTP: `POST /api/search`
 - MCP/OpenAPI bridge: `POST /api/mcp/search`
+- MCP URL with OpenAPI discovery: `GET /mcp/openapi.json`, `POST /mcp/search`
 - MCP tool name: `mcp_search_documents`
 
 ---
@@ -262,11 +265,14 @@ Backend публикует выбранные FastAPI операции чере�
 }
 ```
 
+Для клиентов, запущенных внутри Docker-контейнеров, используйте `http://host.docker.internal:8000/mcp` вместо `localhost`.
+
 Опубликованные операции покрывают health check, список документов, metadata документа, распознанный Markdown, переиндексацию vector store и поиск по документам. Скачивание бинарных файлов остаётся в обычном HTTP API.
 
 Поиск доступен через оба интерфейса:
 
 - OpenAPI/HTTP: `POST /api/search`
 - MCP/OpenAPI bridge: `POST /api/mcp/search`
+- MCP URL с OpenAPI discovery: `GET /mcp/openapi.json`, `POST /mcp/search`
 - MCP tool name: `mcp_search_documents`
 

@@ -82,6 +82,7 @@ def create_app() -> FastAPI:
     app.include_router(search.router, prefix="/api")
     app.include_router(openwebui.router, prefix="/api")
     app.include_router(mcp.router, prefix="/api")
+    app.include_router(mcp.compat_router)
 
     mount_mcp_server(app)
 
